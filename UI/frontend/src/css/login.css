@@ -1,6 +1,6 @@
 .login{
 	flex:1;
-	padding:20px;
+	padding:24px;
 	margin:4px;
 	border-radius:20px;
 	display:flex;
@@ -10,18 +10,20 @@
 
 .login-card{
 	width:min(560px, 100%);
-	border-radius:16px;
-	padding:24px;
+	border-radius:18px;
+	padding:28px;
 	display:flex;
 	flex-direction:column;
-	gap:10px;
+	gap:12px;
 }
 
 .login-card h2{
 	color:var(--primary-color);
+	font-size:1.45rem;
 }
 
 .login-card p{
-	line-height:1.65;
+	line-height:1.75;
+	font-size:0.97rem;
 	color:var(--text-color);
 }

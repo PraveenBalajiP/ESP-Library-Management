@@ -1,13 +1,13 @@
 .footer{
-	border-radius:16px;
+	border-radius:18px;
 	margin:4px;
-	padding:14px 20px;
+	padding:16px 22px;
 }
 
 .footer-content{
 	display:flex;
 	flex-direction:column;
-	gap:8px;
+	gap:9px;
 	color:var(--text-color);
 }
 
@@ -19,7 +19,7 @@
 
 .footer-content p{
 	max-width:760px;
-	line-height:1.65;
+	line-height:1.7;
 	font-size:0.92rem;
 }
 

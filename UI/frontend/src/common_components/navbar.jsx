@@ -7,12 +7,11 @@ function Navbar({ theme, onToggleTheme }){
             <div className="logo">ESP Library</div>
             <div className="nav-options">
                 <button className="theme-toggle" onClick={onToggleTheme}>
-                    {theme === "light" ? "Dark Mode" : "Light Mode"}
+                    {theme==="light"?<i className="fa-solid fa-moon"></i>:<i className="fa-solid fa-sun"></i>}
                 </button>
                 <nav className="nav-links">
-                    <Link to="/" className="nav-btn">Home</Link>
-                    <Link to="/login" className="nav-btn">Login</Link>
-                    <Link to="/user" className="nav-btn">User</Link>
+                    <Link to="/" className="nav-btn"><i className="fa-solid fa-house"></i>Home</Link>
+                    <Link to="/login" className="nav-btn"><i className="fa-solid fa-user"></i>Login</Link>
                 </nav>
             </div>
         </div>
