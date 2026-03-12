@@ -1,0 +1,32 @@
+.footer{
+	border-radius:16px;
+	margin:4px;
+	padding:14px 20px;
+}
+
+.footer-content{
+	display:flex;
+	flex-direction:column;
+	gap:8px;
+	color:var(--text-color);
+}
+
+.footer-content h3{
+	font-size:1rem;
+	letter-spacing:0.03em;
+	color:var(--primary-color);
+}
+
+.footer-content p{
+	max-width:760px;
+	line-height:1.65;
+	font-size:0.92rem;
+}
+
+.footer-content span{
+	color:var(--secondary-color);
+	font-size:0.84rem;
+	font-weight:700;
+	text-transform:uppercase;
+	letter-spacing:0.08em;
+}

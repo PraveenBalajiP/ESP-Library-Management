@@ -1,0 +1,61 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Open Sans';
+}
+
+:root{
+  --theme-dark:#09332f;
+  --theme-light:#f0ede5;
+  --primary-color:#0f5b54;
+  --secondary-color:#2f7c74;
+  --accent-color:#6dcbbf;
+  --background-color:#f7f5ef;
+  --text-color:#123634;
+  --panel-border:rgba(15, 91, 84, 0.4);
+  --panel-shadow:0 12px 30px rgba(7, 30, 27, 0.12);
+  --surface-overlay:rgba(255, 255, 255, 0.14);
+}
+
+[data-theme='dark']{
+  --primary-color:#d7ebe7;
+  --secondary-color:#95cbc2;
+  --accent-color:#63d0c3;
+  --background-color:#062521;
+  --text-color:#eef7f5;
+  --panel-border:rgba(215, 235, 231, 0.26);
+  --panel-shadow:0 16px 34px rgba(0, 0, 0, 0.32);
+  --surface-overlay:rgba(8, 36, 31, 0.35);
+}
+
+body{
+  background: radial-gradient(circle at top left, rgba(109, 203, 191, 0.32), transparent 45%), radial-gradient(circle at bottom right, rgba(15, 91, 84, 0.2), transparent 55%), var(--background-color);
+  color:var(--text-color);
+  min-height:100vh;
+}
+
+#root,
+.App{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.App{
+  padding:14px;
+  gap:10px;
+}
+
+.App div:not(.navbar){
+  background-color:transparent;
+  background:linear-gradient(140deg, var(--surface-overlay), transparent);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--panel-border);
+  box-shadow:var(--panel-shadow);
+}
+
+a{
+  color:inherit;
+}
