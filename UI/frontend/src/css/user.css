@@ -4,17 +4,25 @@
 	margin:4px;
 	border-radius:20px;
 	display:flex;
-	align-items:center;
+	align-items:flex-start;
 	justify-content:center;
 }
 
 .user-card{
-	width:min(700px, 100%);
+	width:min(900px, 100%);
 	border-radius:18px;
 	padding:28px;
 	display:flex;
 	flex-direction:column;
+	gap:20px;
+}
+
+.user-card-header{
+	display:flex;
+	align-items:flex-start;
+	justify-content:space-between;
 	gap:12px;
+	flex-wrap:wrap;
 }
 
 .user-card h2{
@@ -26,4 +34,72 @@
 	line-height:1.75;
 	font-size:0.97rem;
 	color:var(--text-color);
+}
+
+.logout-btn{
+	padding:8px 20px;
+	border-radius:8px;
+	border:none;
+	background:var(--primary-color);
+	color:#fff;
+	cursor:pointer;
+	font-size:0.9rem;
+}
+
+.book-table-wrapper{
+	overflow-x:auto;
+	border-radius:12px;
+	border:1px solid var(--border-color, #e0e0e0);
+}
+
+.book-table{
+	width:100%;
+	border-collapse:collapse;
+	font-size:0.93rem;
+}
+
+.book-table thead tr{
+	background:var(--primary-color);
+	color:#fff;
+}
+
+.book-table th,
+.book-table td{
+	padding:12px 16px;
+	text-align:left;
+	border-bottom:1px solid var(--border-color, #e8e8e8);
+}
+
+.book-table tbody tr:last-child td{
+	border-bottom:none;
+}
+
+.book-table tbody tr:hover{
+	background:var(--hover-color, #f5f5f5);
+}
+
+.badge{
+	display:inline-block;
+	padding:3px 10px;
+	border-radius:20px;
+	font-size:0.8rem;
+	font-weight:600;
+}
+
+.badge.active{
+	background:#d1fae5;
+	color:#065f46;
+}
+
+.badge.overdue{
+	background:#fee2e2;
+	color:#991b1b;
+}
+
+.no-records{
+	text-align:center;
+	padding:32px;
+	color:var(--text-color);
+	font-size:0.97rem;
+	opacity:0.6;
 }

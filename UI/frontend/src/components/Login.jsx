@@ -16,8 +16,7 @@ function Login(){
         try{
             const response=await axios.post("http://localhost:5000/api/login",data);
             toast.success(`${response.data.message}`,{className:"toast-success"});
-            console.log(response.data.data);
-            navigate("/user");
+            navigate("/user",{state:{data:response.data.data}});
         }
         catch(error){
             toast.error(`${error.response.data.message}`,{className:"toast-error"});
