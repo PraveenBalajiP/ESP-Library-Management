@@ -237,6 +237,29 @@
 	user-select: none;
 }
 
+.slide-bar{
+	position:fixed;
+	top:100px;
+	z-index:99999999;
+	background-color:var(--background-color);
+	right:0px;
+	display:flex;
+	flex-direction:column;
+	min-height:30vh;
+	min-width:20vw;
+	justify-content:flex-start;
+	align-items:left;
+}
+
+.slide-bar nav{
+	display:flex;
+	flex-direction:column;
+	gap:10px;
+	padding:20px;
+	justify-content:flex-start;
+	align-items:left;
+}
+
 @media (max-width: 700px) {
 	.workflow-steps {
 		flex-direction: column;

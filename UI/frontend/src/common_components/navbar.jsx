@@ -1,7 +1,7 @@
 import "../css/navbar.css";
 import { Link } from "react-router-dom";
 
-function Navbar({ theme, onToggleTheme }){
+function Navbar({theme,onToggleTheme,slideMenu}){
     return(
         <div className="navbar">
             <div className="logo">ESP Library</div>
@@ -13,6 +13,7 @@ function Navbar({ theme, onToggleTheme }){
                     <Link to="/" className="nav-btn"><i className="fa-solid fa-house"></i>Home</Link>
                     <Link to="/login" className="nav-btn"><i className="fa-solid fa-user"></i>Login</Link>
                 </nav>
+                <button className="hamburger" onClick={slideMenu}><i className="fa-solid fa-bars"></i></button>
             </div>
         </div>
     )

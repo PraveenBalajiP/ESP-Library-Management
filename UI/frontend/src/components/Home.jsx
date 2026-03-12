@@ -1,7 +1,9 @@
+import {Link} from "react-router-dom";
 import "../css/home.css";
 
 function Home(){
     return(
+        <>
         <div className="home">
             <div className="home-intro">
                 <div className="intro-b1">
@@ -131,6 +133,7 @@ function Home(){
                 </div>
             </div>
         </div>
+    </>
     )
 }
 

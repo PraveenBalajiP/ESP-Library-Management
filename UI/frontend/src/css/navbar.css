@@ -13,6 +13,7 @@
     position:sticky;
     top:10px;
     z-index:1000;
+    transition:padding 0.2s ease, border-radius 0.2s ease;
 }
 
 .navbar .logo{
@@ -28,6 +29,7 @@
     align-items:center;
     gap:20px;
 }
+
 .nav-links{
     display:flex;
     gap:20px;
@@ -38,25 +40,31 @@
     text-decoration:none;
     font-size:0.95rem;
     font-weight:600;
-    padding:8px 14px;
+    padding:10px 14px;
     border-radius:999px;
-    transition:background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    background-color:color-mix(in srgb, var(--navbar-hover) 70%, transparent);
+    transition:background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-links a:hover{
     background-color:var(--navbar-hover);
     transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
 }
 
 .nav-options button{
-    padding:8px 16px;
+    width:42px;
+    height:42px;
+    padding:0;
     background-color:var(--navbar-btn-bg);
     color:var(--navbar-text);
     border:none;
-    border-radius:999px;
+    border-radius:12px;
     cursor:pointer;
-    font-size:0.9rem;
+    font-size:1rem;
     font-weight:600;
+    display:grid;
+    place-items:center;
     transition:background-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -65,64 +73,27 @@
     transform:translateY(-1px);
 }
 
+.nav-links a:focus-visible,
+.nav-options button:focus-visible{
+    outline:2px solid color-mix(in srgb, var(--navbar-text) 78%, transparent);
+    outline-offset:2px;
+}
+
 .fa-house,.fa-user{
     color:var(--navbar-text);
     margin-right:5px;
 }
 
-@media (max-width: 980px){
-    .navbar{
-        padding:14px 18px;
-    }
-
-    .nav-options{
-        gap:12px;
-    }
-
-    .nav-links{
-        gap:10px;
-    }
+.navbar .hamburger{
+    display:none;
 }
 
-@media (max-width: 760px){
-    .navbar{
-        flex-direction:column;
-        align-items:stretch;
-        gap:12px;
-    }
-
-    .navbar .logo{
-        font-size:1.2rem;
-    }
-
-    .nav-options{
-        width:100%;
-        flex-direction:column;
-        align-items:stretch;
-        gap:10px;
-    }
-
+@media (max-width: 700px) {
     .nav-links{
-        width:100%;
-        gap:8px;
-        justify-content:space-between;
-        flex-wrap:wrap;
+        display:none;
     }
 
-    .nav-links a,
-    .nav-options button{
-        text-align:center;
-    }
-}
-
-@media (max-width: 520px){
-    .nav-links{
+    .navbar .hamburger{
         display:grid;
-        grid-template-columns:1fr;
-    }
-
-    .nav-links a,
-    .nav-options button{
-        width:100%;
     }
 }
