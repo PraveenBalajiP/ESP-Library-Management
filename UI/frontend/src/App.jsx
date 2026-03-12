@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import {Route,Routes,Link} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import NavBar from './common_components/navbar';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -44,6 +46,7 @@ function App(){
         <Route path="/login" element={<Login/>} />
         <Route path="/user" element={<User/>} />
       </Routes>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Footer/>
     </div>
   );
