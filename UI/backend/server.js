@@ -38,6 +38,23 @@ app.post("/api/addinfo",async (req,res)=>{
     }
 })
 
+app.post("/api/checkout",async (req,res)=>{
+    const {id,bookName}=req.body;
+    try{
+        const exist=await Data.findOne({id:id,bookName:bookName});
+        if(!exist){
+            res.status(400).json({message:"⚠ Alert ⚠ Data does not exist"});
+            return;
+        }
+        else if(exist){
+            return res.status(200).json({message:"Data checked out successfully"});
+        }
+    }
+    catch(error){
+        res.status(500).json({message:`Error checking out data, ${error}`});
+    }
+})
+
 app.post("/api/login",async (req,res)=>{
     const {user}=req.body;
     if(user==="pesu@123"){
