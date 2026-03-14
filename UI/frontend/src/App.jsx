@@ -10,6 +10,7 @@ import User from './components/User';
 import PopUp from './common_components/popup';
 import Footer from './common_components/footer';
 import './App.css';
+import './css/toast.css';
 
 function App(){
   const [theme,setTheme]=useState(()=>localStorage.getItem('theme') || 'light');

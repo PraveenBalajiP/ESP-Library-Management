@@ -12,8 +12,8 @@ function Home(){
                         <p className="intro-para-0">
                             Read. Return. Repeat.
                         </p>
-                        <p className="intro-para-1">
-                            This project presents a prototype for an automated library management system using ESP32 microcontrollers and RFID technology.
+                        <p>
+                            In an era of digital transformation, our mission is to bring speed, accuracy, and automation to library management, making book tracking and access simpler than ever before.
                         </p>
                     </div>
                     <div className="login-sec">
@@ -40,18 +40,7 @@ function Home(){
                     <span className="about-tag">About the Project</span>
                     <h2 className="about-title">Bringing Automation to Every Library Shelf</h2>
                     <p className="about-para">
-                        This project is built around a simple idea — a library should run itself as much as possible.
-                        From the moment a book is picked up to the moment it is returned, every action should be tracked,
-                        verified, and logged without manual effort.
-                    </p>
-                    <p className="about-para">
-                        Designed as a working prototype, the system targets three core problems faced by traditional libraries:
-                        unreliable lending records, missed return deadlines, and untracked book movement.
-                        By automating these checkpoints, the system reduces dependency on manual entry and human oversight.
-                    </p>
-                    <p className="about-para">
-                        The result is a faster, more accountable circulation process — one where staff spend less time
-                        chasing records and students experience a smoother, more reliable borrowing routine.
+                        This project focuses on the development of a smart library management system using RFID technology and web technologies. The main objective is to modernize traditional library operations by introducing automation for book identification and tracking. By using RFID tags attached to books and an RFID reader connected to a microcontroller, the system enables quick and contactless identification of library items. This approach helps reduce manual work, improves accuracy, and speeds up common library processes such as issuing and returning books.   
                     </p>
                 </div>
                 <div className="about-highlights">
@@ -85,8 +74,8 @@ function Home(){
                     <div className="workflow-step">
                         <div className="step-number">01</div>
                         <div className="step-content">
-                            <h3>Scan Tag</h3>
-                            <p>The RFID scanner reads the unique tag attached to the book or user card at the service point.</p>
+                            <h3>RFID Tag Assignment</h3>
+                            <p>Each book in the library is attached with a unique RFID tag that stores identification information about the book.</p>
                         </div>
                     </div>
 
@@ -95,8 +84,8 @@ function Home(){
                     <div className="workflow-step">
                         <div className="step-number">02</div>
                         <div className="step-content">
-                            <h3>Verify Identity</h3>
-                            <p>The system cross-checks the scanned ID against the database to confirm user and book validity.</p>
+                            <h3>Book Scanning</h3>
+                            <p>When a book is placed near the RFID reader, the reader scans the RFID tag and captures the book’s unique ID.</p>
                         </div>
                     </div>
 
@@ -105,8 +94,8 @@ function Home(){
                     <div className="workflow-step">
                         <div className="step-number">03</div>
                         <div className="step-content">
-                            <h3>Check Status</h3>
-                            <p>Lending status, issue date, and return deadline are fetched and evaluated in real time.</p>
+                            <h3>Data Transmission</h3>
+                            <p>The RFID reader connected to the microcontroller sends the scanned data to the backend server through the network</p>
                         </div>
                     </div>
 
@@ -115,8 +104,8 @@ function Home(){
                     <div className="workflow-step">
                         <div className="step-number">04</div>
                         <div className="step-content">
-                            <h3>Authorize or Flag</h3>
-                            <p>If all checks pass, the transaction is approved. Otherwise, the system raises an alert for overdue or unauthorized movement.</p>
+                            <h3>Data Processing</h3>
+                            <p>The backend application receives the data, processes it, and checks or updates the book information in the database.</p>
                         </div>
                     </div>
 
@@ -125,8 +114,18 @@ function Home(){
                     <div className="workflow-step">
                         <div className="step-number">05</div>
                         <div className="step-content">
-                            <h3>Update Records</h3>
-                            <p>The database is updated instantly — issue, return, or flag status is logged with timestamp and user details.</p>
+                            <h3>System Response</h3>
+                            <p>Based on the data, the system records the transaction (such as issuing or returning a book) and updates the library records.</p>
+                        </div>
+                    </div>
+
+                    <div className="workflow-arrow">&#8594;</div>
+
+                    <div className="workflow-step">
+                        <div className="step-number">06</div>
+                        <div className="step-content">
+                            <h3>User Interface Update</h3>
+                            <p>The web application displays the updated information to the user, allowing librarians to monitor and manage library activities easily.</p>
                         </div>
                     </div>
 
