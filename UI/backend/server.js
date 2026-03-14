@@ -91,6 +91,26 @@ app.post("/api/login",async (req,res)=>{
     }  
 })
 
+app.get("/api/stats",async (req,res)=>{
+    try{
+        const TOTAL_BOOKS=Number(process.env.TOTAL_BOOKS || 6);
+        const issuedDocs=await Data.find({},"lastDate");
+        const issuedCount=issuedDocs.length;
+        const now=new Date();
+        const pendingReturns=issuedDocs.filter((doc)=>new Date(doc.lastDate)<now).length;
+        const availableBooks=Math.max(TOTAL_BOOKS-issuedCount,0);
+        res.status(200).json({
+            issuedCount,
+            availableBooks,
+            pendingReturns,
+            totalBooks:TOTAL_BOOKS
+        });
+    }
+    catch(error){
+        res.status(500).json({message:`Error fetching stats, ${error}`});
+    }
+})
+
 app.post("/api/withdraw",async (req,res)=>{
     const {id,bookName}=req.body;
     try{

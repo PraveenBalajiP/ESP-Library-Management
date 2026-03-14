@@ -1,7 +1,42 @@
-import {Link} from "react-router-dom";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "../css/home.css";
 
 function Home(){
+    const [stats,setStats]=useState({
+        issuedCount:0,
+        availableBooks:0,
+        pendingReturns:0
+    });
+
+    useEffect(()=>{
+        let active=true;
+        async function fetchStats(){
+            try{
+                const response=await axios.get("http://localhost:5000/api/stats");
+                if(active){
+                    setStats({
+                        issuedCount:response.data.issuedCount ?? 0,
+                        availableBooks:response.data.availableBooks ?? 0,
+                        pendingReturns:response.data.pendingReturns ?? 0
+                    });
+                }
+            }
+            catch(error){
+                if(active){
+                    setStats({issuedCount:0,availableBooks:0,pendingReturns:0});
+                }
+            }
+        }
+        fetchStats();
+        const intervalId=setInterval(fetchStats,3000);
+        return ()=>{
+            active=false;
+            clearInterval(intervalId);
+        };
+    },[]);
+
     return(
         <>
         <div className="home">
@@ -23,15 +58,15 @@ function Home(){
                 <div className="intro-b2">
                     <div className="info-1">
                         <h2 className="info-title">Books Issued Till Now</h2>
-                        <p className="info-para">1000</p>
+                        <p className="info-para">{stats.issuedCount}</p>
                     </div>
                     <div className="info-2">
                         <h2 className="info-title">Books Available</h2>
-                        <p className="info-para">500</p> 
+                        <p className="info-para">{stats.availableBooks}</p> 
                     </div>
                     <div className="info-3">
                         <h2 className="info-title">Pending Returns</h2>
-                        <p className="info-para">50</p>   
+                        <p className="info-para">{stats.pendingReturns}</p>   
                     </div>
                 </div>
             </div>
