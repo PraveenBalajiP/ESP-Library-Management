@@ -2,16 +2,19 @@ import { useEffect, useState } from 'react';
 import {Route,Routes,Link} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 import NavBar from './common_components/navbar';
 import Home from './components/Home';
 import Login from './components/Login';
 import User from './components/User';
+import PopUp from './common_components/popup';
 import Footer from './common_components/footer';
 import './App.css';
 
 function App(){
   const [theme,setTheme]=useState(()=>localStorage.getItem('theme') || 'light');
   const [menu,setMenu]=useState(false);
+  const [popupData,setPopupData]=useState(null);
 
   useEffect(()=>{
     document.documentElement.setAttribute('data-theme', theme);
@@ -30,6 +33,20 @@ function App(){
     setMenu(false);
   };
 
+  useEffect(()=>{
+  const interval=setInterval(async ()=>{
+    try{
+      const response=await axios.get("http://localhost:5000/api/addinfo");
+      if(response.data.popup){
+        setPopupData(response.data);
+      }
+      }catch(err){
+        console.log(err);
+      }
+    },2000);
+    return ()=>clearInterval(interval);
+  },[]);
+
   return(
     <div className="App">
       <NavBar theme={theme} onToggleTheme={toggleTheme} slideMenu={slideMenu}/>
@@ -46,6 +63,15 @@ function App(){
         <Route path="/login" element={<Login/>} />
         <Route path="/user" element={<User/>} />
       </Routes>
+      {popupData && (
+        <PopUp
+          id={popupData.id}
+          bookName={popupData.bookName}
+          dateIssued={popupData.dateIssued}
+          lastDate={popupData.lastDate}
+          onClose={()=>setPopupData(null)}
+        />
+      )}
       <ToastContainer position="top-right" autoClose={3000} />
       <Footer/>
     </div>

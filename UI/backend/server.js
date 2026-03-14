@@ -11,6 +11,9 @@ const app=express();
 app.use(cors());
 app.use(express.json());
 
+let popup=false;
+let popupData=null;
+
 app.post("/api/addinfo",async (req,res)=>{
     const {id,bookName}=req.body;
     const dateIssued=new Date();
@@ -19,6 +22,13 @@ app.post("/api/addinfo",async (req,res)=>{
 
     const alreadyExist=await Data.findOne({id:id,bookName:bookName});
     if(alreadyExist){
+        popup=true;
+        popupData={
+            id:alreadyExist.id,
+            bookName:alreadyExist.bookName,
+            dateIssued:alreadyExist.dateIssued,
+            lastDate:alreadyExist.lastDate
+        };
         res.status(400).json({message:"Data already exists"});
         return;
     }
@@ -37,6 +47,14 @@ app.post("/api/addinfo",async (req,res)=>{
         res.status(500).json({message:`Error adding data, ${error}`});
     }
 })
+
+app.get("/api/addinfo",(req,res)=>{
+    const current=popup;
+    const data=popupData;
+    popup=false;
+    popupData=null;
+    res.json({popup:current,...(data||{})});
+});
 
 app.post("/api/checkout",async (req,res)=>{
     const {id,bookName}=req.body;
@@ -71,6 +89,24 @@ app.post("/api/login",async (req,res)=>{
         }
         res.status(200).json(sendData);
     }  
+})
+
+app.post("/api/withdraw",async (req,res)=>{
+    const {id,bookName}=req.body;
+    try{
+        const exist=await Data.findOne({id:id,bookName:bookName});
+        if(!exist){
+            res.status(400).json({message:"⚠ Alert ⚠ Data does not exist"});
+            return;
+        }
+        else if(exist){
+            await Data.deleteOne({id:id,bookName:bookName});
+            res.status(200).json({message:"Book withdrawn successfully"});
+        }
+    }
+    catch(error){
+        res.status(500).json({message:`Error withdrawing book, ${error}`});
+    }
 })
 
 app.listen(PORT,()=>{
