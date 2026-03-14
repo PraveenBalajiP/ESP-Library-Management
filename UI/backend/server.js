@@ -111,6 +111,26 @@ app.get("/api/stats",async (req,res)=>{
     }
 })
 
+app.post("/api/renew",async (req,res)=>{
+    const {id,bookName}=req.body;
+    try{
+        const exist=await Data.findOne({id:id,bookName:bookName});
+        if(!exist){
+            res.status(400).json({message:"⚠ Alert ⚠ Data does not exist"});
+            return;
+        }
+        else if(exist){
+            const newLastDate=new Date(exist.lastDate);
+            newLastDate.setDate(newLastDate.getDate()+15);
+            await Data.updateOne({id:id,bookName:bookName},{$set:{lastDate:newLastDate}});
+            res.status(200).json({message:"Book renewed successfully"});
+        }
+    }
+    catch(error){
+        res.status(500).json({message:`Error renewing book, ${error}`});
+    }
+})
+
 app.post("/api/withdraw",async (req,res)=>{
     const {id,bookName}=req.body;
     try{

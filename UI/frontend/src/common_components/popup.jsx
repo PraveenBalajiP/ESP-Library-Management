@@ -35,6 +35,18 @@ function PopUp({id,bookName,dateIssued,lastDate,onClose}){
         onClose();
     }
 
+    async function renewBook(){
+        try{
+            const response=await axios.post("http://localhost:5000/api/renew",{id,bookName});
+            if(response.status===200){
+                toast.success("Book renewed successfully");
+            }
+        }catch(err){
+            toast.error("Error renewing book");
+        }
+        onClose();
+    }
+
     function formatDate(val){
         if(!val) return '-';
         return new Date(val).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
@@ -55,6 +67,7 @@ function PopUp({id,bookName,dateIssued,lastDate,onClose}){
                 </div>
                 <p className="popup-countdown">Closing in {timeLeft}s</p>
                 <div className="popup-actions">
+                    <button className="popup-btn-withdraw" onClick={renewBook}>Renew</button>
                     <button className="popup-btn-withdraw" onClick={withdrawBook}>Withdraw</button>
                     <button className="popup-btn-close" onClick={onClose}>Close</button>
                 </div>
