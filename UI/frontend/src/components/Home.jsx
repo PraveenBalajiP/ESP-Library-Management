@@ -14,7 +14,7 @@ function Home(){
         let active=true;
         async function fetchStats(){
             try{
-                const response=await axios.get("http://192.168.137.1:5000/api/stats");
+                const response=await axios.get("/api/stats");
                 if(active){
                     setStats({
                         issuedCount:response.data.issuedCount ?? 0,

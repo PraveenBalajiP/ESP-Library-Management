@@ -14,7 +14,7 @@ function Login(){
             user:input
         };
         try{
-            const response=await axios.post("http://192.168.137.1:5000/api/login",data);
+            const response=await axios.post("/api/login",data);
             toast.success(`${response.data.message}`,{className:"toast-success"});
             navigate("/user",{state:{data:response.data.data}});
         }

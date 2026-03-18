@@ -25,7 +25,7 @@ function PopUp({id,bookName,dateIssued,lastDate,onClose}){
 
     async function withdrawBook(){
         try{
-            const response=await axios.post("http://localhost:5000/api/withdraw",{id,bookName});
+            const response=await axios.post("/api/withdraw",{id,bookName});
             if(response.status===200){
                 toast.success("Book withdrawn successfully");
             }
@@ -37,7 +37,7 @@ function PopUp({id,bookName,dateIssued,lastDate,onClose}){
 
     async function renewBook(){
         try{
-            const response=await axios.post("http://localhost:5000/api/renew",{id,bookName});
+            const response=await axios.post("/api/renew",{id,bookName});
             if(response.status===200){
                 toast.success("Book renewed successfully");
             }

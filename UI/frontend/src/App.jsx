@@ -37,7 +37,7 @@ function App(){
   useEffect(()=>{
   const interval=setInterval(async ()=>{
     try{
-      const response=await axios.get("http://192.168.137.1:5000/api/addinfo");
+      const response=await axios.get("/api/addinfo");
       if(response.data.popup){
         setPopupData(response.data);
       }
