@@ -18,6 +18,10 @@ let popup=false;
 let popupData=null;
 let peopleInLibrary=0;
 
+app.get("/",(req,res)=>{
+    res.send("Library Management Backend is running");
+});
+
 app.post("/api/addinfo",async (req,res)=>{
     const {id,bookName}=req.body;
     const dateIssued=new Date();
