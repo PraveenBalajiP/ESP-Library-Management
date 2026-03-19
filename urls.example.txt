@@ -1,0 +1,3 @@
+ADDINFO_URL=https://your-backend-url.com/api/addinfo
+EXIT_VERIFY_URL=https://your-backend-url.com/api/exit-verify
+PEOPLE_COUNT_URL=https://your-backend-url.com/api/people-count

@@ -1,0 +1,10 @@
+# Configuration files with sensitive URLs/IPs
+urls-config.txt
+
+# Environment files
+.env
+*.local
+
+# Arduino IDE
+.DS_Store
+*.orig
