@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://your-backend-render-domain.onrender.com/api/:path*"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/:path*"
+    }
+  ],
+  "env": {
+    "VITE_API_BASE_URL": "/api"
+  }
+}
