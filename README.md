@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESP Library Management — Project Details & Setup</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121a33;
+      --muted: #95a0c2;
+      --text: #ecf0ff;
+      --accent: #72a3ff;
+      --ok: #65d6a6;
+      --warn: #ffd166;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Segoe UI, Arial, sans-serif;
+      background: linear-gradient(180deg, #070b18 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 42px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+      margin: 0 0 10px;
+    }
+    h1 { font-size: 2rem; }
+    h2 {
+      font-size: 1.35rem;
+      margin-top: 26px;
+      border-bottom: 1px solid #243055;
+      padding-bottom: 8px;
+    }
+    h3 { font-size: 1.05rem; margin-top: 18px; }
+    p, li { color: #d7def8; }
+    .muted { color: var(--muted); }
+    .card {
+      background: linear-gradient(180deg, #111a36 0%, #0f1730 100%);
+      border: 1px solid #253056;
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 12px;
+    }
+    code {
+      background: #0a1128;
+      color: #b8d0ff;
+      padding: 2px 6px;
+      border-radius: 5px;
+      border: 1px solid #2a3969;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      background: #0a1128;
+      border: 1px solid #2a3969;
+      border-radius: 10px;
+      padding: 12px;
+      overflow-x: auto;
+      color: #d9e7ff;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-right: 8px;
+      border: 1px solid #33477e;
+      color: #cfe0ff;
+      background: #1a274e;
+    }
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    ul { padding-left: 20px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #2a3969;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #152247;
+      color: #dbe6ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>ESP Library Management — Full Project Details & Setup</h1>
+    <p class="muted">Last updated: 2026-03-19</p>
+
+    <div class="card">
+      <span class="badge">Stack</span>
+      <span class="badge">ESP32 + RFID + IR</span>
+      <span class="badge">MERN-style Web UI</span>
+      <p>
+        This project combines an <strong>ESP32 hardware workflow</strong> (RFID issue/exit detection + IR people counting)
+        with a <strong>React frontend</strong> and an <strong>Express + MongoDB backend</strong>.
+      </p>
+    </div>
+
+    <h2>1) Repository Overview</h2>
+    <div class="card">
+      <pre>ESP-Library_Management/
+├─ main-logic.ino                  # Primary ESP32 firmware (RFID + IR + API calls)
+├─ uid-detection.ino               # Utility sketch to read RFID UID values
+├─ wifi-connection.ino             # Utility sketch to validate Wi-Fi connectivity
+├─ urls-config.txt                 # Active backend API URLs used by device
+├─ urls.example.txt                # URL template placeholders
+└─ UI/
+   ├─ backend/
+   │  ├─ server.js                 # Express API server
+   │  ├─ package.json              # Backend dependencies & scripts
+   │  ├─ vercel.json               # Backend Vercel deployment config
+   │  ├─ mongoConnect/connectDB.js # Mongo connection bootstrap
+   │  └─ models/datas.models.js    # Mongoose schema/model
+   └─ frontend/
+      ├─ src/                      # React app source
+      ├─ package.json              # Frontend dependencies & scripts
+      ├─ vite.config.js            # Dev proxy (/api -> localhost:5000)
+      └─ vercel.json               # Frontend rewrites to backend API</pre>
+    </div>
+
+    <h2>2) System Architecture</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Hardware Layer (ESP32)</h3>
+        <ul>
+          <li>Reads RFID tag UIDs at entry and exit points.</li>
+          <li>Maps UID to known student IDs and book IDs.</li>
+          <li>Tracks people count using entry/exit IR sensors.</li>
+          <li>Sends HTTPS requests to backend endpoints.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Backend Layer (Express + MongoDB)</h3>
+        <ul>
+          <li>Receives issue/verify/count events from ESP32.</li>
+          <li>Stores transactions in MongoDB.</li>
+          <li>Exposes stats and login-based data retrieval for frontend.</li>
+          <li>Handles duplicate issue popup workflow.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Frontend Layer (React + Vite)</h3>
+        <ul>
+          <li>Displays stats: issued books, available books, people count.</li>
+          <li>Provides login and user dashboard views.</li>
+          <li>Polls duplicate popup endpoint for warning notifications.</li>
+          <li>Uses Vite proxy in local dev and rewrites in deployment.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>3) Backend Setup</h2>
+    <div class="card">
+      <h3>3.1 Prerequisites</h3>
+      <ul>
+        <li>Node.js 18+ (recommended: latest LTS).</li>
+        <li>A MongoDB Atlas/database URI.</li>
+      </ul>
+
+      <h3>3.2 Install & Run</h3>
+      <pre>cd UI/backend
+npm install
+npm run dev   # nodemon server.js
+# or
+npm start     # node server.js</pre>
+
+      <h3>3.3 Required Environment Variables (.env)</h3>
+      <pre>PORT=5000
+MONGO_URI=your_mongodb_connection_string
+FRONTEND_URL=http://localhost:5173
+TOTAL_BOOKS=6</pre>
+
+      <h3>3.4 CORS Rules (from server.js)</h3>
+      <ul>
+        <li>Allowed localhost origins include <code>3000</code>, <code>5173</code>, and <code>5000</code>.</li>
+        <li><code>FRONTEND_URL</code> is also allowed.</li>
+        <li>Any origin containing <code>vercel.app</code> is allowed.</li>
+      </ul>
+    </div>
+
+    <h2>4) API Endpoints (Backend)</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Route</th>
+            <th>Purpose</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>GET</td><td>/</td><td>Health text response</td><td>Backend alive check</td></tr>
+          <tr><td>POST</td><td>/api/addinfo</td><td>Issue/entry book record</td><td>Returns duplicate state if same id+book exists</td></tr>
+          <tr><td>GET</td><td>/api/addinfo</td><td>Read & reset duplicate popup data</td><td>Frontend polls this every 2s</td></tr>
+          <tr><td>POST</td><td>/api/checkout</td><td>Delete issued record on checkout</td><td>Validates issued state first</td></tr>
+          <tr><td>POST</td><td>/api/login</td><td>Return records by user</td><td>Special user <code>pesu@123</code> returns all records</td></tr>
+          <tr><td>GET</td><td>/api/stats</td><td>Issued, available, people count</td><td>Uses <code>TOTAL_BOOKS</code></td></tr>
+          <tr><td>POST</td><td>/api/people-count</td><td>Update in-memory people count</td><td>Expects non-negative number <code>count</code></td></tr>
+          <tr><td>POST</td><td>/api/renew</td><td>Extend due date by 15 days</td><td>Requires existing issue record</td></tr>
+          <tr><td>POST</td><td>/api/withdraw</td><td>Delete issue record</td><td>Requires existing issue record</td></tr>
+          <tr><td>POST</td><td>/api/exit-verify</td><td>Theft detection check</td><td>400 if not issued; 200 if valid</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>5) Frontend Setup</h2>
+    <div class="card">
+      <h3>5.1 Install & Run</h3>
+      <pre>cd UI/frontend
+npm install
+npm run dev</pre>
+
+      <h3>5.2 Build & Preview</h3>
+      <pre>npm run build
+npm run preview</pre>
+
+      <h3>5.3 Local API Routing</h3>
+      <ul>
+        <li>Vite proxy maps <code>/api</code> to <code>http://localhost:5000</code>.</li>
+        <li>Frontend axios calls use relative paths such as <code>/api/stats</code>, <code>/api/login</code>, <code>/api/addinfo</code>.</li>
+      </ul>
+    </div>
+
+    <h2>6) ESP32 Firmware Setup</h2>
+    <div class="card">
+      <h3>6.1 Libraries Needed (Arduino IDE)</h3>
+      <ul>
+        <li><code>MFRC522</code> library</li>
+        <li>ESP32 core (for <code>WiFi.h</code>, <code>WiFiClientSecure.h</code>)</li>
+        <li>Built-in <code>HTTPClient</code>, <code>SPI</code></li>
+      </ul>
+
+      <h3>6.2 Hardware Pin Mapping</h3>
+      <table>
+        <thead><tr><th>Component</th><th>Pin</th></tr></thead>
+        <tbody>
+          <tr><td>RFID Entry SS</td><td>GPIO 5</td></tr>
+          <tr><td>RFID Exit SS</td><td>GPIO 27</td></tr>
+          <tr><td>RFID Reset</td><td>GPIO 22</td></tr>
+          <tr><td>SPI SCK</td><td>GPIO 18</td></tr>
+          <tr><td>SPI MISO</td><td>GPIO 19</td></tr>
+          <tr><td>SPI MOSI</td><td>GPIO 23</td></tr>
+          <tr><td>Buzzer</td><td>GPIO 26</td></tr>
+          <tr><td>Green LED</td><td>GPIO 25</td></tr>
+          <tr><td>Red LED</td><td>GPIO 33</td></tr>
+          <tr><td>IR Entry Sensor</td><td>GPIO 32</td></tr>
+          <tr><td>IR Exit Sensor</td><td>GPIO 34</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6.3 Firmware Variables to Update</h3>
+      <ul>
+        <li>Set Wi-Fi in <code>main-logic.ino</code>: <code>ssid</code>, <code>password</code>.</li>
+        <li>Set backend URLs (issue, exit verify, people count).</li>
+        <li>Update UID maps in <code>getStudent()</code> and <code>getBook()</code>.</li>
+      </ul>
+
+      <h3>6.4 Useful Utility Sketches</h3>
+      <ul>
+        <li><code>wifi-connection.ino</code>: confirms network connection and board IP.</li>
+        <li><code>uid-detection.ino</code>: prints scanned RFID UID to Serial Monitor.</li>
+      </ul>
+    </div>
+
+    <h2>7) URL Config Files</h2>
+    <div class="card">
+      <ul>
+        <li><code>urls.example.txt</code> contains placeholders for backend API endpoints.</li>
+        <li><code>urls-config.txt</code> currently points to deployed backend URL.</li>
+        <li>Keep these in sync with firmware URL constants when changing environments.</li>
+      </ul>
+    </div>
+
+    <h2>8) Deployment Notes (Vercel)</h2>
+    <div class="card">
+      <h3>Backend</h3>
+      <ul>
+        <li><code>UI/backend/vercel.json</code> routes all requests to <code>server.js</code> with <code>@vercel/node</code>.</li>
+        <li>Set Vercel env vars: <code>MONGO_URI</code>, <code>FRONTEND_URL</code>, <code>TOTAL_BOOKS</code>.</li>
+      </ul>
+      <h3>Frontend</h3>
+      <ul>
+        <li><code>UI/frontend/vercel.json</code> rewrites <code>/api/*</code> to deployed backend API.</li>
+        <li><code>VITE_API_BASE_URL</code> is configured as <code>/api</code>.</li>
+      </ul>
+    </div>
+
+    <h2>9) Full Local Run Checklist</h2>
+    <div class="card">
+      <ol>
+        <li>Start MongoDB (Atlas or local).</li>
+        <li>Create backend <code>.env</code> and run backend on port 5000.</li>
+        <li>Run frontend on port 5173 (Vite default).</li>
+        <li>Update ESP32 Wi-Fi credentials and URLs.</li>
+        <li>Upload <code>main-logic.ino</code> to ESP32.</li>
+        <li>Open Serial Monitor at 115200 baud to verify events and API responses.</li>
+      </ol>
+      <p class="ok"><strong>Expected:</strong> RFID scans create/validate records, home page stats update, and people count syncs from IR sensors.</p>
+    </div>
+
+    <h2>10) Troubleshooting</h2>
+    <div class="card">
+      <ul>
+        <li><span class="warn">RFID not detected:</span> verify power (3.3V), SPI pins, SS pins, and RST wiring.</li>
+        <li><span class="warn">CORS blocked:</span> ensure frontend origin is covered by backend CORS allowlist.</li>
+        <li><span class="warn">No DB connection:</span> check <code>MONGO_URI</code> and MongoDB network access rules.</li>
+        <li><span class="warn">Frontend API errors:</span> confirm backend is running at <code>localhost:5000</code> for local proxy.</li>
+        <li><span class="warn">People count issues:</span> tune IR sensor placement and debounce timing (<code>IR_DEBOUNCE_MS</code>).</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
