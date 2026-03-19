@@ -27,6 +27,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
+connectDB();
+
 let popup=false;
 let popupData=null;
 let peopleInLibrary=0;
@@ -211,7 +213,10 @@ app.post("/api/exit-verify",async (req,res)=>{
     }
 })
 
-app.listen(PORT,"0.0.0.0",()=>{
-    connectDB();
-    console.log(`Server is running on port ${PORT}`);
-})
+if(process.env.VERCEL !== "1"){
+    app.listen(PORT,"0.0.0.0",()=>{
+        console.log(`Server is running on port ${PORT}`);
+    })
+}
+
+export default app;

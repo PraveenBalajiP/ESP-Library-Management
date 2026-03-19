@@ -1,6 +1,6 @@
-# Deployment Guide: Vercel + Render + MongoDB Atlas
+# Deployment Guide: Vercel (Frontend + Backend) + MongoDB Atlas
 
-This guide explains how to deploy your **React frontend** to **Vercel**, **Node backend** to **Render**, and use **MongoDB Atlas** for the database.
+This guide explains how to deploy your **React frontend** and **Node backend** to **Vercel**, with **MongoDB Atlas** as database.
 
 ---
 
@@ -17,7 +17,7 @@ This guide explains how to deploy your **React frontend** to **Vercel**, **Node 
 4. Whitelist IP:
    - Go to **Security > Network Access**
    - Click **Add IP Address**
-   - Select **Allow Access from Anywhere** (0.0.0.0/0) for now (or add specific Render IP later)
+   - Select **Allow Access from Anywhere** (0.0.0.0/0)
    - Click **Confirm**
 5. Get connection string:
    - Go to **Deployment > Database**
@@ -29,7 +29,7 @@ This guide explains how to deploy your **React frontend** to **Vercel**, **Node 
 
 ---
 
-## 2) Backend Deployment (Render)
+## 2) Backend Deployment (Vercel)
 
 1. Push your code to GitHub first:
    ```bash
@@ -38,20 +38,17 @@ This guide explains how to deploy your **React frontend** to **Vercel**, **Node 
    git push
    ```
 
-2. Go to [render.com](https://render.com) and sign up with GitHub.
+2. Go to [vercel.com](https://vercel.com) and sign up with GitHub.
 
-3. Create a new **Web Service**:
-   - Click **New +** → **Web Service**
+3. Create a new **Project**:
+   - Click **Add New** → **Project**
    - Connect your GitHub repo
-   - Select branch (main/master)
-   - Name: `esp-library-backend`
-   - Environment: **Node**
-   - Build Command: `npm install`
-   - Start Command: `node server.js`
-   - Click **Create Web Service**
+   - Framework preset: **Other**
+   - Root Directory: `UI/backend`
+   - Click **Deploy**
 
 4. Set environment variables:
-   - In Render dashboard, go to your service
+   - In Vercel dashboard, go to your backend project
    - Click **Environment**
    - Add variables:
      - `MONGO_URI`: Your MongoDB connection string (from step 1.5)
@@ -59,10 +56,12 @@ This guide explains how to deploy your **React frontend** to **Vercel**, **Node 
      - `FRONTEND_URL`: Your Vercel frontend URL (e.g., `https://esp-library.vercel.app`)
    - Click **Save**
 
-5. Wait for build (usually 2-3 min). Once live, note your backend URL (e.g., `https://esp-library-backend.onrender.com`)
+5. Confirm `UI/backend/vercel.json` exists (already added in repo) and routes all traffic to `server.js`.
 
-6. Test the backend:
-   - Open `https://esp-library-backend.onrender.com/api/stats` in browser
+6. Redeploy after env vars are added. Note your backend URL (e.g., `https://esp-library-backend.vercel.app`).
+
+7. Test the backend:
+   - Open `https://esp-library-backend.vercel.app/api/stats` in browser
    - Should see JSON response
 
 ---
@@ -70,14 +69,14 @@ This guide explains how to deploy your **React frontend** to **Vercel**, **Node 
 ## 3) Frontend Deployment (Vercel)
 
 1. Update `vercel.json` in `UI/frontend/` folder:
-   - Replace `https://your-backend-render-domain.onrender.com` with your actual Render backend URL
+   - Replace `https://your-backend-vercel-domain.vercel.app` with your actual backend Vercel URL
    - Example:
      ```json
      {
        "rewrites": [
          {
            "source": "/api/:path*",
-           "destination": "https://esp-library-backend.onrender.com/api/:path*"
+           "destination": "https://esp-library-backend.vercel.app/api/:path*"
          },
          ...
        ]
@@ -111,9 +110,9 @@ This guide explains how to deploy your **React frontend** to **Vercel**, **Node 
 Update your ESP32 sketch with the live backend URL:
 
 ```cpp
-String addinfoURL = "https://esp-library-backend.onrender.com/api/addinfo";
-String exitVerifyURL = "https://esp-library-backend.onrender.com/api/exit-verify";
-String peopleCountURL = "https://esp-library-backend.onrender.com/api/people-count";
+String addinfoURL = "https://esp-library-backend.vercel.app/api/addinfo";
+String exitVerifyURL = "https://esp-library-backend.vercel.app/api/exit-verify";
+String peopleCountURL = "https://esp-library-backend.vercel.app/api/people-count";
 ```
 
 Since URLs are HTTPS, also add to ESP32 setup (after WiFi connect):
@@ -132,7 +131,7 @@ For simplicity, **keep HTTP** while developing; upgrade to HTTPS with proper cer
 
 ## 5) Environment Variables Summary
 
-**Backend (.env on Render):**
+**Backend (Vercel Environment Variables):**
 ```env
 MONGO_URI=mongodb+srv://user:pass@cluster.abc.mongodb.net/library?retryWrites=true&w=majority
 PORT=5000
@@ -146,7 +145,7 @@ FRONTEND_URL=https://esp-library.vercel.app
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://esp-library-backend.onrender.com/api/:path*"
+         "destination": "https://esp-library-backend.vercel.app/api/:path*"
     }
   ]
 }
@@ -161,16 +160,16 @@ FRONTEND_URL=https://esp-library.vercel.app
 - Check Vercel logs: **Settings > Function Logs**
 
 ### B) CORS error in browser console
-- Ensure `FRONTEND_URL` env var on Render matches your Vercel domain
+- Ensure `FRONTEND_URL` env var on backend Vercel project matches frontend domain
 - Or manually add your Vercel domain to `allowedOrigins` in `server.js`
 
 ### C) MongoDB connection fails
 - Verify `MONGO_URI` is correct and doesn't have URL encoding issues
-- Ensure IP whitelist on MongoDB Atlas includes Render IP (or 0.0.0.0/0)
+- Ensure IP whitelist on MongoDB Atlas includes your deployment access (or 0.0.0.0/0)
 - Test locally first: `mongo "mongodb+srv://..." ` with MongoDB CLI
 
-### D) Render keeps restarting backend
-- Check **Logs** tab for error messages
+### D) Backend project returns 500 on Vercel
+- Check backend **Runtime Logs** in Vercel
 - Verify all env variables are set
 - Ensure `npm install` runs without errors
 
@@ -179,7 +178,7 @@ FRONTEND_URL=https://esp-library.vercel.app
 ## 7) Costs & Limits
 
 - **Vercel**: Free tier (10 Git deployments/month, 100GB bandwidth)
-- **Render**: Free tier (750 hours/month, auto-sleep after 15 min inactivity, ~0.5s startup)
+- **Vercel Backend Functions**: subject to serverless limits/timeouts on free tier
 - **MongoDB Atlas**: Free tier (512MB storage, 100 max connections)
 
 For production: Upgrade to paid plans as needed.
@@ -196,9 +195,9 @@ For production: Upgrade to paid plans as needed.
 - [ ] People counter (IR sensors) updates on dashboard
 - [ ] All green/red LEDs and buzzer trigger correctly
 - [ ] Update ESP32 sketch with production URLs
-- [ ] MongoDB Atlas whitelist includes Render + test connectivity
+- [ ] MongoDB Atlas whitelist configured + connection tested
 - [ ] Tighten CORS to disallow `*` origin (use specific domains)
 
 ---
 
-Done! Your system is now production-ready on Vercel + Render + MongoDB.
+Done! Your system is now production-ready on Vercel + MongoDB.
