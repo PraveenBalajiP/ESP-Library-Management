@@ -27,7 +27,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-connectDB();
+// Initialize database before starting server
+await connectDB();
 
 let popup=false;
 let popupData=null;
