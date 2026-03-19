@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <SPI.h>
 #include <MFRC522.h>
@@ -8,9 +9,9 @@ const char* ssid = "YOUR_WIFI_NAME";
 const char* password = "YOUR_WIFI_PASSWORD";
 
 /* SERVER - BACKEND IP CONFIGURED */
-String addinfoURL = "http://172.18.17.171:5000/api/addinfo";
-String exitVerifyURL = "http://172.18.17.171:5000/api/exit-verify";
-String peopleCountURL = "http://172.18.17.171:5000/api/people-count";
+String addinfoURL = "https://esp-library-management-rju9.vercel.app/api/addinfo";
+String exitVerifyURL = "https://esp-library-management-rju9.vercel.app/api/exit-verify";
+String peopleCountURL = "https://esp-library-management-rju9.vercel.app/api/people-count";
 
 /* RFID PINS */
 #define SS_ENTRY 5
@@ -114,8 +115,11 @@ void ensureWiFi() {
 void sendPeopleCount() {
   ensureWiFi();
 
+  WiFiClientSecure client;
+  client.setInsecure();
+
   HTTPClient http;
-  http.begin(peopleCountURL);
+  http.begin(client, peopleCountURL);
   http.addHeader("Content-Type", "application/json");
 
   String json = "{\"count\":" + String(peopleInLibrary) + "}";
@@ -211,8 +215,11 @@ String getBook(String uid) {
 void sendIssue() {
   ensureWiFi();
 
+  WiFiClientSecure client;
+  client.setInsecure();
+
   HTTPClient http;
-  http.begin(addinfoURL);
+  http.begin(client, addinfoURL);
   http.addHeader("Content-Type", "application/json");
 
   String json = "{\"id\":\"" + currentStudent + "\",\"bookName\":\"" + currentBook + "\"}";
@@ -234,8 +241,11 @@ void sendIssue() {
 void sendCheckout(String student, String book) {
   ensureWiFi();
 
+  WiFiClientSecure client;
+  client.setInsecure();
+
   HTTPClient http;
-  http.begin(exitVerifyURL);
+  http.begin(client, exitVerifyURL);
   http.addHeader("Content-Type", "application/json");
 
   String json = "{\"id\":\"" + student + "\",\"bookName\":\"" + book + "\"}";
