@@ -7,7 +7,7 @@ function Home(){
     const [stats,setStats]=useState({
         issuedCount:0,
         availableBooks:0,
-        pendingReturns:0
+        peopleInLibrary:0
     });
 
     useEffect(()=>{
@@ -19,13 +19,13 @@ function Home(){
                     setStats({
                         issuedCount:response.data.issuedCount ?? 0,
                         availableBooks:response.data.availableBooks ?? 0,
-                        pendingReturns:response.data.pendingReturns ?? 0
+                        peopleInLibrary:response.data.peopleInLibrary ?? response.data.pendingReturns ?? 0
                     });
                 }
             }
             catch(error){
                 if(active){
-                    setStats({issuedCount:0,availableBooks:0,pendingReturns:0});
+                    setStats({issuedCount:0,availableBooks:0,peopleInLibrary:0});
                 }
             }
         }
@@ -65,8 +65,8 @@ function Home(){
                         <p className="info-para">{stats.availableBooks}</p> 
                     </div>
                     <div className="info-3">
-                        <h2 className="info-title">Pending Returns</h2>
-                        <p className="info-para">{stats.pendingReturns}</p>   
+                        <h2 className="info-title">No. of People in Library</h2>
+                        <p className="info-para">{stats.peopleInLibrary}</p>   
                     </div>
                 </div>
             </div>

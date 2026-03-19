@@ -16,6 +16,7 @@ app.use(express.json());
 
 let popup=false;
 let popupData=null;
+let peopleInLibrary=0;
 
 app.post("/api/addinfo",async (req,res)=>{
     const {id,bookName}=req.body;
@@ -74,6 +75,8 @@ app.post("/api/checkout",async (req,res)=>{
             message:"Book was not issued"
         });
     }
+    // Actually delete the book record on checkout
+    await Data.deleteOne({id:id,bookName:bookName});
     return res.status(200).json({
         valid:true,
         message:"Checkout successful"
@@ -107,19 +110,30 @@ app.get("/api/stats",async (req,res)=>{
         const TOTAL_BOOKS=Number(process.env.TOTAL_BOOKS || 6);
         const issuedDocs=await Data.find({},"lastDate");
         const issuedCount=issuedDocs.length;
-        const now=new Date();
-        const pendingReturns=issuedDocs.filter((doc)=>new Date(doc.lastDate)<now).length;
         const availableBooks=Math.max(TOTAL_BOOKS-issuedCount,0);
         res.status(200).json({
             issuedCount,
             availableBooks,
-            pendingReturns,
+            peopleInLibrary,
             totalBooks:TOTAL_BOOKS
         });
     }
     catch(error){
         res.status(500).json({message:`Error fetching stats, ${error}`});
     }
+})
+
+app.post("/api/people-count",(req,res)=>{
+    const {count}=req.body;
+    const numericCount=Number(count);
+    if(Number.isNaN(numericCount) || numericCount<0){
+        return res.status(400).json({message:"Invalid people count"});
+    }
+    peopleInLibrary=Math.floor(numericCount);
+    return res.status(200).json({
+        message:"People count updated",
+        peopleInLibrary
+    });
 })
 
 app.post("/api/renew",async (req,res)=>{
@@ -157,6 +171,26 @@ app.post("/api/withdraw",async (req,res)=>{
     }
     catch(error){
         res.status(500).json({message:`Error withdrawing book, ${error}`});
+    }
+})
+
+app.post("/api/exit-verify",async (req,res)=>{
+    const {id,bookName}=req.body;
+    try{
+        const exist=await Data.findOne({id:id,bookName:bookName});
+        if(!exist){
+            return res.status(400).json({
+                valid:false,
+                message:"Theft detected: book was not issued"
+            });
+        }
+        return res.status(200).json({
+            valid:true,
+            message:"Exit verified: no theft detected"
+        });
+    }
+    catch(error){
+        return res.status(500).json({message:`Error verifying exit, ${error}`});
     }
 })
 

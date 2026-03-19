@@ -10,14 +10,18 @@ const userSchema=new mongoose.Schema({
         required:true
     },
     dateIssued:{
-        type:String,
-        required:true
+        type:Date,
+        required:true,
+        default:Date.now
     },
     lastDate:{
-        type:String,
+        type:Date,
         required:true
     }
 },{timestamps:true});
+
+// Add unique index to prevent duplicate issues
+userSchema.index({ id: 1, bookName: 1 }, { unique: true });
 
 const Data=mongoose.model("data",userSchema);
 
