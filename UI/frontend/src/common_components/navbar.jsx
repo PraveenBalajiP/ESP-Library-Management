@@ -11,6 +11,7 @@ function Navbar({theme,onToggleTheme,slideMenu}){
                 </button>
                 <nav className="nav-links">
                     <Link to="/" className="nav-btn"><i className="fa-solid fa-house"></i>Home</Link>
+                    <Link to="/inventory" className="nav-btn"><i className="fa-solid fa-book"></i>Inventory</Link>
                     <Link to="/login" className="nav-btn"><i className="fa-solid fa-user"></i>Login</Link>
                 </nav>
                 <button className="hamburger" onClick={slideMenu}><i className="fa-solid fa-bars"></i></button>

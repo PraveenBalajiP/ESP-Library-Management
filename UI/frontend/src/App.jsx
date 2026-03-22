@@ -7,6 +7,7 @@ import NavBar from './common_components/navbar';
 import Home from './components/Home';
 import Login from './components/Login';
 import User from './components/User';
+import Inventory from './components/Inventory';
 import PopUp from './common_components/popup';
 import Footer from './common_components/footer';
 import './App.css';
@@ -56,11 +57,13 @@ function App(){
         <button onClick={closeMenu}>Close</button>
         <nav className="nav-links">
             <Link to="/" className="nav-btn" onClick={closeMenu}><i className="fa-solid fa-house"></i>Home</Link>
+            <Link to="/inventory" className="nav-btn" onClick={closeMenu}><i className="fa-solid fa-book"></i>Inventory</Link>
             <Link to="/login" className="nav-btn" onClick={closeMenu}><i className="fa-solid fa-user"></i>Login</Link>
         </nav>
       </div>
       <Routes>
         <Route path="/" element={<Home/>} />
+        <Route path="/inventory" element={<Inventory/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/user" element={<User/>} />
       </Routes>

@@ -79,7 +79,7 @@
     outline-offset:2px;
 }
 
-.fa-house,.fa-user{
+.fa-house,.fa-user,.fa-book{
     color:var(--navbar-text);
     margin-right:5px;
 }

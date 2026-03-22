@@ -33,6 +33,7 @@ await connectDB();
 let popup=false;
 let popupData=null;
 let peopleInLibrary=0;
+const SUBJECT_STOCK=5;
 
 app.get("/",(req,res)=>{
     res.send("Library Management Backend is running");
@@ -55,6 +56,13 @@ app.post("/api/addinfo",async (req,res)=>{
             };
             return res.status(200).json({
                 duplicate:true
+            });
+        }
+        const subjectIssuedCount=await Data.countDocuments({bookName});
+        if(subjectIssuedCount>=SUBJECT_STOCK){
+            return res.status(400).json({
+                message:`No books left in inventory for ${bookName}`,
+                inventoryAvailable:0
             });
         }
         const newData=new Data({
@@ -140,6 +148,44 @@ app.get("/api/stats",async (req,res)=>{
     }
     catch(error){
         res.status(500).json({message:`Error fetching stats, ${error}`});
+    }
+})
+
+app.get("/api/inventory",async (req,res)=>{
+    try{
+        const issuedBySubject=await Data.aggregate([
+            {
+                $group:{
+                    _id:"$bookName",
+                    issuedCount:{$sum:1}
+                }
+            },
+            {
+                $project:{
+                    _id:0,
+                    subject:"$_id",
+                    issuedCount:1
+                }
+            },
+            {
+                $sort:{subject:1}
+            }
+        ]);
+
+        const inventory=issuedBySubject.map((item)=>({
+            subject:item.subject,
+            totalBooks:SUBJECT_STOCK,
+            issuedCount:item.issuedCount,
+            availableBooks:Math.max(SUBJECT_STOCK-item.issuedCount,0)
+        }));
+
+        return res.status(200).json({
+            inventory,
+            subjectStock:SUBJECT_STOCK
+        });
+    }
+    catch(error){
+        return res.status(500).json({message:`Error fetching inventory, ${error}`});
     }
 })
 

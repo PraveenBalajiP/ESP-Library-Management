@@ -1,0 +1,79 @@
+.inventory-page{
+    min-height:72vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:20px;
+}
+
+.inventory-card{
+    width:min(960px,100%);
+    background:var(--surface-strong);
+    color:var(--text-color);
+    border-radius:16px;
+    box-shadow:var(--panel-shadow);
+    padding:24px;
+}
+
+.inventory-card h2{
+    margin:0 0 8px 0;
+}
+
+.inventory-card p{
+    margin:0;
+    opacity:0.9;
+}
+
+.inventory-empty{
+    margin-top:16px;
+    padding:14px;
+    border-radius:12px;
+    background:color-mix(in srgb, var(--surface-overlay) 70%, transparent);
+}
+
+.inventory-table-wrapper{
+    margin-top:18px;
+    overflow-x:auto;
+}
+
+.inventory-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.inventory-table th,
+.inventory-table td{
+    text-align:left;
+    padding:12px;
+    border-bottom:1px solid color-mix(in srgb, var(--text-color) 14%, transparent);
+}
+
+.stock-badge{
+    display:inline-flex;
+    min-width:42px;
+    justify-content:center;
+    align-items:center;
+    border-radius:999px;
+    padding:4px 10px;
+    font-weight:700;
+}
+
+.stock-badge.in{
+    background:color-mix(in srgb, var(--accent-color) 28%, transparent);
+    color:var(--primary-color);
+}
+
+.stock-badge.out{
+    background:color-mix(in srgb, var(--secondary-color) 35%, transparent);
+    color:var(--navbar-bg-start);
+}
+
+@media (max-width:700px){
+    .inventory-page{
+        padding:12px;
+    }
+
+    .inventory-card{
+        padding:16px;
+    }
+}
