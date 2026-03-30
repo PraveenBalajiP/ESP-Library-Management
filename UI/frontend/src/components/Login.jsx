@@ -34,11 +34,17 @@ function Login(){
                         <option value="student">Student</option>
                         <option value="librarian">Librarian</option>
                     </select>
-                    <select onChange={(e)=>setInput(e.target.value)}>
-                        <option value="">Select User</option>
-                        <option value="PES2UG24CS001">PES2UG24CS001</option>
-                        <option value="PES24G24CS002">PES2UG24CS002</option>
-                    </select>
+                    {
+                        placeholder==="Enter your SRN.." ? (
+                            <select onChange={(e)=>setInput(e.target.value)}>
+                                <option value="">Select User</option>
+                                <option value="PES2UG24CS001">PES2UG24CS001</option>
+                                <option value="PES2UG24CS002">PES2UG24CS002</option>
+                            </select>
+                        ):(
+                            <input type="text" placeholder={placeholder} onChange={(e)=>setInput(e.target.value)}/>
+                        )
+                    }
                     <button type="submit" onClick={handleSubmit}>Login</button>
                 </form>
             </div>
