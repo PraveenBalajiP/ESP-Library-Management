@@ -34,9 +34,11 @@ function Login(){
                         <option value="student">Student</option>
                         <option value="librarian">Librarian</option>
                     </select>
-                    <input  type="text" 
-                            onChange={(event)=>setInput(event.target.value)}
-                            placeholder={placeholder}/>
+                    <select onChange={(e)=>setInput(e.target.value)}>
+                        <option value="">Select User</option>
+                        <option value="PES2UG24CS001">PES2UG24CS001</option>
+                        <option value="PES24G24CS002">PES2UG24CS002</option>
+                    </select>
                     <button type="submit" onClick={handleSubmit}>Login</button>
                 </form>
             </div>

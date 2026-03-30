@@ -15,15 +15,17 @@ const allowedOrigins = [
     process.env.FRONTEND_URL || ""
 ].filter(Boolean);
 
+const isLocalOrigin=(origin)=>/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
+
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin) || origin.includes("vercel.app")) {
+        if (!origin || allowedOrigins.includes(origin) || isLocalOrigin(origin) || origin.includes("vercel.app")) {
             callback(null, true);
         } else {
             callback(new Error("CORS not allowed"));
         }
     },
-    methods:["GET","POST"]
+    methods:["GET","POST","OPTIONS"]
 }));
 app.use(express.json());
 

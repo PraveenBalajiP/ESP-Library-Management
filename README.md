@@ -194,6 +194,13 @@ In `main-logic.ino`:
 
 ## 9) Full Local Run Checklist
 
+Quick commands from repo root:
+```bash
+npm run install:all
+npm run start:backend
+npm run start:frontend
+```
+
 1. Start MongoDB (Atlas or local).
 2. Create `UI/backend/.env` with required values.
 3. Run backend on port `5000`.
