@@ -4,12 +4,12 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-const char* ssid     = "Moto";
-const char* password = "toek5869";
+const char* ssid     = "YOUR WIFI NAME HERE";
+const char* password = "YOUR WIFI PASSWORD HERE";
 
-const char* addinfoURL    = "https://esp-library-management-rju9.vercel.app/api/addinfo";
-const char* exitVerifyURL = "https://esp-library-management-rju9.vercel.app/api/exit-verify";
-const char* peopleCountURL= "https://esp-library-management-rju9.vercel.app/api/people-count";
+const char* addinfoURL    = "URL"; //https://esp-library-management.vercel.app/api/addinfo
+const char* exitVerifyURL = "URL"; //https://esp-library-management.vercel.app/api/exit-verify
+const char* peopleCountURL= "URL"; //https://esp-library-management.vercel.app/api/people-count
 
 #define SS_ENTRY  5
 #define SS_EXIT   27
