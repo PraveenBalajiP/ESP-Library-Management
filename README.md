@@ -176,3 +176,10 @@ In `main-logic.ino`:
 - `urls.example.txt` has placeholder endpoint templates.
 - `urls-config.txt` contains active deployed endpoint URLs.
 - Keep URL files and firmware URL constants aligned per environment.
+
+## 8) Future Updates
+
+- Direct fine calculation upon overdue based on certain credentials given by librarian
+- Seperate page that is accessible by librarian that shows status of only overdue books alongwith fine amount accumulated
+- Warning sent to the user upon his login for his overdue books
+- Direct payment of fines through RazorPay
