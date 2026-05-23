@@ -1,8 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import connectDB from './mongoConnect/connectDB.js';
 import Data from './models/datas.models.js';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 const PORT=process.env.PORT || 5000;
@@ -25,12 +27,37 @@ app.use(cors({
             callback(new Error("CORS not allowed"));
         }
     },
-    methods:["GET","POST","OPTIONS"]
+    methods:["GET","POST","OPTIONS"],
+    credentials: true
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Initialize database before starting server
 await connectDB();
+
+const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
+
+function generateToken(user, isAdmin=false){
+    return jwt.sign({user,isAdmin}, JWT_SECRET, {expiresIn: '8h'});
+}
+
+function authenticateToken(req, res, next){
+    const authHeader = req.headers['authorization'] || req.headers['Authorization'];
+    let token = authHeader && authHeader.split(' ')[1];
+    // if no Authorization header, try cookie
+    if(!token && req.cookies && req.cookies.token){
+        token = req.cookies.token;
+    }
+    if(!token) return res.status(401).json({message: 'No token provided'});
+    try{
+        const payload = jwt.verify(token, JWT_SECRET);
+        req.user = payload;
+        next();
+    }catch(err){
+        return res.status(403).json({message: 'Invalid or expired token'});
+    }
+}
 
 let popup=false;
 let popupData=null;
@@ -41,7 +68,7 @@ app.get("/",(req,res)=>{
     res.send("Library Management Backend is running");
 });
 
-app.post("/api/addinfo",async (req,res)=>{
+app.post("/api/addinfo", authenticateToken, async (req,res)=>{
     const {id,bookName}=req.body;
     const dateIssued=new Date();
     const lastDate=new Date(dateIssued);
@@ -95,7 +122,7 @@ app.get("/api/addinfo",(req,res)=>{
     res.json({popup:current,...(data||{})});
 });
 
-app.post("/api/checkout",async (req,res)=>{
+app.post("/api/checkout", authenticateToken, async (req,res)=>{
     const {id,bookName}=req.body;
     try{
         const exist=await Data.findOne({id:id,bookName:bookName});
@@ -117,23 +144,59 @@ app.post("/api/checkout",async (req,res)=>{
     }
 })
 
-app.post("/api/login",async (req,res)=>{
-    const {user}=req.body;
-    if(user==="pesu@123"){
-        const sendData={
-            data:await Data.find(),
-            message:"Login Successful"
+app.post("/api/login", async (req,res)=>{
+    const {user} = req.body;
+    try{
+        const isAdmin = user === "pesu@123";
+        let sendData;
+        if(isAdmin){
+            sendData = {
+                data: await Data.find(),
+                message: "Login Successful"
+            };
+        } else {
+            sendData = {
+                data: await Data.find({id: user}),
+                message: "Login Successful"
+            };
         }
-        res.status(200).json(sendData);
+
+        const token = generateToken(user, isAdmin);
+        // set cookie
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 8 * 60 * 60 * 1000 // 8 hours
+        });
+
+        return res.status(200).json({...sendData});
     }
-    else{
-        const sendData={
-            data:await Data.find({id:user}),
-            message:"Login Successful"
-        }
-        res.status(200).json(sendData);
-    }  
+    catch(err){
+        return res.status(500).json({message:`Login error: ${err}`});
+    }
 })
+
+// Auth check endpoint (used by frontend to verify cookie/session)
+app.get('/api/auth-check', authenticateToken, async (req,res)=>{
+    try{
+        const user = req.user?.user || null;
+        const isAdmin = req.user?.isAdmin || false;
+        if(isAdmin){
+            return res.status(200).json({authenticated:true, isAdmin:true, data: await Data.find()});
+        }
+        return res.status(200).json({authenticated:true, isAdmin:false, data: await Data.find({id:user})});
+    }
+    catch(err){
+        return res.status(500).json({message:`Auth check error: ${err}`});
+    }
+});
+
+// Logout clears the cookie
+app.post('/api/logout', (req,res)=>{
+    res.clearCookie('token', { httpOnly: true, sameSite: 'lax' });
+    return res.status(200).json({message: 'Logged out'});
+});
 
 app.get("/api/stats",async (req,res)=>{
     try{
@@ -204,7 +267,7 @@ app.post("/api/people-count",(req,res)=>{
     });
 })
 
-app.post("/api/renew",async (req,res)=>{
+app.post("/api/renew", authenticateToken, async (req,res)=>{
     const {id,bookName}=req.body;
     try{
         const exist=await Data.findOne({id:id,bookName:bookName});
@@ -224,7 +287,7 @@ app.post("/api/renew",async (req,res)=>{
     }
 })
 
-app.post("/api/withdraw",async (req,res)=>{
+app.post("/api/withdraw", authenticateToken, async (req,res)=>{
     const {id,bookName}=req.body;
     try{
         const exist=await Data.findOne({id:id,bookName:bookName});
@@ -242,7 +305,7 @@ app.post("/api/withdraw",async (req,res)=>{
     }
 })
 
-app.post("/api/exit-verify",async (req,res)=>{
+app.post("/api/exit-verify", authenticateToken, async (req,res)=>{
     const {id,bookName}=req.body;
     try{
         const exist=await Data.findOne({id:id,bookName:bookName});
