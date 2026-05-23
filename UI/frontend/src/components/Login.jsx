@@ -16,6 +16,8 @@ function Login(){
         try{
             const response=await axios.post("/api/login",data);
             toast.success(`${response.data.message}`,{className:"toast-success"});
+            // The backend sets an httpOnly cookie; the cookie will be sent automatically
+            // because axios.defaults.withCredentials = true. Navigate with returned data.
             navigate("/user",{state:{data:response.data.data}});
         }
         catch(error){

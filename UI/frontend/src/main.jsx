@@ -6,6 +6,8 @@ import './index.css'
 import App from './App.jsx'
 
 axios.defaults.baseURL=import.meta.env.VITE_API_BASE_URL || ''
+// Send cookies/credentials by default so httpOnly auth cookie is included
+axios.defaults.withCredentials = true;
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

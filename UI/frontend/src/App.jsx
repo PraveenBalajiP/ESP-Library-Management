@@ -7,7 +7,8 @@ import NavBar from './common_components/navbar';
 import Home from './components/Home';
 import Login from './components/Login';
 import User from './components/User';
-import Inventory from './components/Inventory';
+import FinePage from './components/FinePage';
+import ProtectedRoute from './common_components/ProtectedRoute';
 import PopUp from './common_components/popup';
 import Footer from './common_components/footer';
 import './App.css';
@@ -63,9 +64,17 @@ function App(){
       </div>
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/inventory" element={<Inventory/>} />
         <Route path="/login" element={<Login/>} />
-        <Route path="/user" element={<User/>} />
+        <Route path="/user" element={
+          <ProtectedRoute>
+            <User />
+          </ProtectedRoute>
+        } />
+        <Route path="/fine-page" element={
+          <ProtectedRoute>
+            <FinePage />
+          </ProtectedRoute>
+        } />
       </Routes>
       {popupData && (
         <PopUp
