@@ -85,7 +85,25 @@ function App(){
           onClose={()=>setPopupData(null)}
         />
       )}
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={2200}
+        pauseOnHover={false}
+        pauseOnFocusLoss={false}
+        closeOnClick
+        draggable
+        newestOnTop={false}
+        theme="dark"
+        toastClassName={({type})=>{
+          if(type === 'success') return 'toast-success';
+          if(type === 'error') return 'toast-error';
+          if(type === 'info') return 'toast-default';
+          if(type === 'warning') return 'toast-default';
+          if(type === 'default') return 'toast-default';
+          if(type === 'loading') return 'toast-loading';
+          return 'toast-default';
+        }}
+      />
       <Footer/>
     </div>
   );

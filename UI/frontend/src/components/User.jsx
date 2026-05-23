@@ -68,7 +68,8 @@ function User(){
                     </div>
                     <div className="user-actions">
                         <button className="fine-btn" onClick={()=>navigate('/fine-page', {state:{data: data || []}})}>
-                            Download Status Fine
+                            <i style={{marginRight:8}} className="fa-solid fa-download"></i>
+                            Download Fine List
                         </button>
                         <button className="logout-btn" onClick={async ()=>{
                             try{
@@ -78,6 +79,7 @@ function User(){
                             }
                             navigate("/login");
                         }}>
+                            <i style={{marginRight:8}} className="fa-solid fa-right-from-bracket"></i>
                             Logout
                         </button>
                     </div>

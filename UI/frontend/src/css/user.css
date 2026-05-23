@@ -46,6 +46,10 @@
 	font-size:0.9rem;
 }
 
+.fine-btn{
+	margin:10px;
+}
+
 .book-table-wrapper{
 	overflow-x:auto;
 	border-radius:12px;

@@ -83,7 +83,7 @@ function FinePage(){
 		link.download = 'fine-status.csv';
 		link.click();
 		URL.revokeObjectURL(url);
-		toast.success('Fine status downloaded');
+		toast.success('Fine status downloaded', {autoClose: 2200, closeButton:true, pauseOnHover:false, pauseOnFocusLoss:false});
 	}
 
 	if(loading) return <div style={{padding:20}}>Loading fine details...</div>;
