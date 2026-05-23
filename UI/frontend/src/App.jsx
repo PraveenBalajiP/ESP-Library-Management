@@ -62,20 +62,22 @@ function App(){
             <Link to="/login" className="nav-btn" onClick={closeMenu}><i className="fa-solid fa-user"></i>Login</Link>
         </nav>
       </div>
-      <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/user" element={
-          <ProtectedRoute>
-            <User />
-          </ProtectedRoute>
-        } />
-        <Route path="/fine-page" element={
-          <ProtectedRoute>
-            <FinePage />
-          </ProtectedRoute>
-        } />
-      </Routes>
+      <main className="app-main">
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/user" element={
+            <ProtectedRoute>
+              <User />
+            </ProtectedRoute>
+          } />
+          <Route path="/fine-page" element={
+            <ProtectedRoute>
+              <FinePage />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </main>
       {popupData && (
         <PopUp
           id={popupData.id}
@@ -92,14 +94,14 @@ function App(){
         pauseOnFocusLoss={false}
         closeOnClick
         draggable
-        newestOnTop={false}
+        newestOnTop
+        limit={3}
         theme="dark"
-        toastClassName={({type})=>{
+        hideProgressBar={false}
+        toastClassName={(ctx)=>{
+          const type = ctx?.type ?? 'default';
           if(type === 'success') return 'toast-success';
           if(type === 'error') return 'toast-error';
-          if(type === 'info') return 'toast-default';
-          if(type === 'warning') return 'toast-default';
-          if(type === 'default') return 'toast-default';
           if(type === 'loading') return 'toast-loading';
           return 'toast-default';
         }}

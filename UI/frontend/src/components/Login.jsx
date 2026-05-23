@@ -15,13 +15,21 @@ function Login(){
         };
         try{
             const response=await axios.post("/api/login",data);
-            toast.success(`${response.data.message}`,{className:"toast-success", autoClose:2200, closeButton:true, pauseOnHover:false, pauseOnFocusLoss:false});
-            // The backend sets an httpOnly cookie; the cookie will be sent automatically
-            // because axios.defaults.withCredentials = true. Navigate with returned data.
+            toast.success(`${response.data.message}`,{
+                autoClose:2200,
+                closeButton:true,
+                pauseOnHover:false,
+                pauseOnFocusLoss:false,
+            });
             navigate("/user",{state:{data:response.data.data}});
         }
         catch(error){
-            toast.error(`${error.response?.data?.message || 'Login failed'}`,{className:"toast-error", autoClose:2800, closeButton:true, pauseOnHover:false, pauseOnFocusLoss:false});
+            toast.error(`${error.response?.data?.message || 'Login failed'}`,{
+                autoClose:2800,
+                closeButton:true,
+                pauseOnHover:false,
+                pauseOnFocusLoss:false,
+            });
         }
     }
 

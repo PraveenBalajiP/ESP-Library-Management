@@ -1,14 +1,14 @@
 .fine-page{
 	flex:1;
+	width:100%;
 	padding:24px;
 	display:flex;
-	justify-content:center;
 	align-items:flex-start;
 }
 
 .fine-card{
-	width:min(1100px, 100%);
-	border-radius:20px;
+	width:100%;
+	border-radius:0;
 	padding:28px;
 	display:flex;
 	flex-direction:column;

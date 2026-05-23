@@ -1,3 +1,10 @@
+.app-main{
+	flex:1;
+	width:100%;
+	display:flex;
+	flex-direction:column;
+}
+
 .slide-backdrop{
 	position:fixed;
 	inset:0;

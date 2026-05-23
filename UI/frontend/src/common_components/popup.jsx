@@ -28,6 +28,8 @@ function PopUp({id,bookName,dateIssued,lastDate,onClose}){
             const response=await axios.post("/api/withdraw",{id,bookName});
             if(response.status===200){
                 toast.success("Book withdrawn successfully", {autoClose:2200, closeButton:true, pauseOnHover:false, pauseOnFocusLoss:false});
+            }else{
+                toast.error("Could not withdraw book", {autoClose:2800, closeButton:true, pauseOnHover:false, pauseOnFocusLoss:false});
             }
         }catch(err){
             toast.error("Error withdrawing book", {autoClose:2800, closeButton:true, pauseOnHover:false, pauseOnFocusLoss:false});
@@ -40,6 +42,8 @@ function PopUp({id,bookName,dateIssued,lastDate,onClose}){
             const response=await axios.post("/api/renew",{id,bookName});
             if(response.status===200){
                 toast.success("Book renewed successfully", {autoClose:2200, closeButton:true, pauseOnHover:false, pauseOnFocusLoss:false});
+            }else{
+                toast.error("Could not renew book", {autoClose:2800, closeButton:true, pauseOnHover:false, pauseOnFocusLoss:false});
             }
         }catch(err){
             toast.error("Error renewing book", {autoClose:2800, closeButton:true, pauseOnHover:false, pauseOnFocusLoss:false});

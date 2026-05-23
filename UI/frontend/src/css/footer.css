@@ -1,14 +1,28 @@
 .footer{
-	border-radius:18px;
-	margin:4px;
-	padding:16px 22px;
+	width:100%;
+	border-radius:0;
+	margin:0;
+	padding:18px 24px;
 }
 
 .footer-content{
 	display:flex;
 	flex-direction:column;
-	gap:9px;
+	gap:8px;
 	color:var(--text-color);
+}
+
+@media (min-width: 720px){
+	.footer-content{
+		flex-direction:row;
+		align-items:flex-end;
+		justify-content:space-between;
+		gap:20px;
+	}
+
+	.footer-content p{
+		text-align:right;
+	}
 }
 
 .footer-content h3{
@@ -18,9 +32,10 @@
 }
 
 .footer-content p{
-	max-width:760px;
-	line-height:1.7;
-	font-size:0.92rem;
+	max-width:520px;
+	line-height:1.65;
+	font-size:0.9rem;
+	color:var(--muted-text);
 }
 
 .footer-content span{
